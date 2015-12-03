@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 #Copyright (C) 2016 Nestor Manrique
 #
 #Permission is hereby granted, free of charge, to any person obtaining
@@ -23,8 +25,6 @@
 #not be used in advertising or otherwise to promote the sale, use or
 #other dealings in this Software without prior written authorization
 #from himself.
-
-#!/usr/bin/env python
 
 import sys
 from bs4 import BeautifulSoup
