@@ -9,7 +9,7 @@ The purpose of this script is to ease the process of studying with a simulator a
 
 ## Usage
 
-./aiotestkingScrapper <exam_code>
+` ./aiotestkingScrapper <exam_code> `
 
 The only argument for the script is the exam code as it appears in the home page of aiotestking, several versions of the same exam may appear so you can especify the version like in the page as well, e.g. "1z0-821", "1z0-821 (v.2)". Right now is case sensitive so if the exam code appears like "1Z0-100" using minus z won't work.
 
