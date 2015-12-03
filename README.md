@@ -64,4 +64,5 @@ The format for the exam simulator allows to add an explanation for the anwser bu
 - [ ] Make the script interactive and design a menu to list the exam codes and names of the tests for a specific vendor, e.g. Oracle, Cisco, etc (kind of like the front page has it organized).
 
 Copyright (C) 2016 Nestor Manrique
+
 This software is published under the [X11 License](http://www.gnu.org/licenses/license-list.html#X11License) which is compatible with the GNU GPL.
