@@ -30,7 +30,8 @@ The example of an output text file for import is given below and its format is d
 
 Source File Sample
 
-```1. Text of the first question.
+```
+1. Text of the first question.
 
 A. First choice text.
 B. Second choice text.
@@ -46,20 +47,21 @@ b) Second choice text.
 c) Third choice text.
 d) Fourth choice text.
 
-Answer: C, D```
+Answer: C, D
+```
 
 The format for the exam simulator allows to add an explanation for the anwser but since answers in aiotestkings are mostly wrong, we strongly recommend you to review the questions by yourself, research the correct anwsers in the documentation of the product you are aiming a certification for, and benefit from te knowledge you will obtain with this plan of study.
 
 ### To do list
-[x] Code an early version of the script.
-[x] Make the script available in github
-[ ] Show error messages for exam codes not listed in aiotestking.
-[ ] Make the script python 2 compatible.
-[ ] Add a parameter to specify the name of an output file instead of only getting the questions data in stdout.
-[ ] Change the script so it is not case sensitive in the exam search.
-[ ] Support scrapping and parsing images in questions.
-[ ] Add an option so it can output a .rtf file instead of a .txt so we can include images in questions as well.
-[ ] Make the script interactive and design a menu to list the exam codes and names of the tests for a specific vendor, e.g. Oracle, Cisco, etc (kind of like the front page has it organized).
+-[x] Code an early version of the script.
+-[x] Make the script available in github
+-[ ] Show error messages for exam codes not listed in aiotestking.
+-[ ] Make the script python 2 compatible.
+-[ ] Add a parameter to specify the name of an output file instead of only getting the questions data in stdout.
+-[ ] Change the script so it is not case sensitive in the exam search.
+-[ ] Support scrapping and parsing images in questions.
+-[ ] Add an option so it can output a .rtf file instead of a .txt so we can include images in questions as well.
+-[ ] Make the script interactive and design a menu to list the exam codes and names of the tests for a specific vendor, e.g. Oracle, Cisco, etc (kind of like the front page has it organized).
 
 Copyright (C) 2016 Nestor Manrique
 This software is published under the [X11 License](http://www.gnu.org/licenses/license-list.html#X11License) which is compatible with the GNU GPL.
