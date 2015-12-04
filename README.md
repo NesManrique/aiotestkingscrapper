@@ -55,13 +55,13 @@ The format for the exam simulator allows to add an explanation for the anwser bu
 ### To do list
 - [x] Code an early version of the script.
 - [x] Make the script available in github
-- [ ] Show error messages for exam codes not listed in aiotestking.
-- [ ] Make the script python 2 compatible.
-- [ ] Add a parameter to specify the name of an output file instead of only getting the questions data in stdout.
-- [ ] Change the script so it is not case sensitive in the exam search.
+- [x] Show error messages for exam codes not listed in aiotestking.
+- [x] Make output go to file instead of stdout. Also add parameter to specify file path and name.
+- [x] Add an option so it can output a .rtf file instead of a .txt so we can include images in questions as well.
 - [ ] Support scrapping and parsing images in questions.
-- [ ] Add an option so it can output a .rtf file instead of a .txt so we can include images in questions as well.
-- [ ] Make the script interactive and design a menu to list the exam codes and names of the tests for a specific vendor, e.g. Oracle, Cisco, etc (kind of like the front page has it organized).
+- [ ] Change the script so it is not case sensitive in the exam search.
+- [ ] Make the script interactive and design a menu to list the exam codes and names of the tests for a specific vendor, e.g. Oracle, Cisco, etc (kind of like is organized in the home page of aiotestking).
+- [ ] Make the script python 2 compatible or turn it to binary with pyinstaller or cx_freeze.
 
 =======
 
