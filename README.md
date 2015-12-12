@@ -7,15 +7,39 @@ The idea is to get all the questions, options and answers from a specified test 
 
 The purpose of this script is to ease the process of studying with a simulator and encourage you to search for the real anwsers since, as we have seen in our own experience, the anwsers and explanations in aiotestking are mostly wrong. ***Consider yourself advice! Do not self-rekt assuming everything in that page is right.***
 
+## Installation
+
+1. Since the script is built in Python 3 you will need to install this version of python on your system. In my case I used Python 3.4 you can download it from [here](https://www.python.org/downloads/release/python-343/) although the latest version in the time of writing this README is Python 3.5 (I didn't test the script with this version).
+
+2. After installing Python 3 use the requirements.txt file in the repo with pip to install all the packages for the script.
+
+3. Run the script with your Python 3 interpreter, make sure you are using the correct version looking for the default python in your path variable.
+
 ## Usage
 
-` ./aiotestkingScrapper <exam_code> `
+
+```
+usage: aiotestkingscrapper.py [-h] [-f output_filepath] [-txt] exam_code
+
+Generates rtf with questions from aiotestking.
+
+positional arguments:
+  exam_code             Code of the exam and version (i.e. "1z0-821", "1z0-821
+                        (v.2)")
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -f output_filepath, --output-filepath output_filepath
+                        especify output file name
+  -txt, --txt-output    outputs txt format instead of rtf (warning, txt format
+                        does not support images in questions)
+```
 
 The only argument for the script is the exam code as it appears in the home page of aiotestking, several versions of the same exam may appear so you can especify the version like in the page as well, e.g. "1z0-821", "1z0-821 (v.2)". Right now is case sensitive so if the exam code appears like "1Z0-100" using minus z won't work.
 
 ## Script Output
 
-The output file containing questions is an usual text file (and soon well be an option with a formatted text document in RTF (Rich Text Format)). Irrespective of the format, the file should consist of the following parts:
+The output file containing questions is a rtf file (or optionally a .txt file). Irrespective of the format, the file should consist of the following parts:
 
    1. An exam description located before the first question (optionally).
    2. A numbered list of questions.
@@ -51,6 +75,8 @@ Answer: C, D
 ```
 
 The format for the exam simulator allows to add an explanation for the anwser but since answers in aiotestkings are mostly wrong, we strongly recommend you to review the questions by yourself, research the correct anwsers in the documentation of the product you are aiming a certification for, and benefit from te knowledge you will obtain with this plan of study.
+
+Some questions have images in them, soon I will add support so the output file will contain this images too.
 
 ### To do list
 - [x] Code an early version of the script.

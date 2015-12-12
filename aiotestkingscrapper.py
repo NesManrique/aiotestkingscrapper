@@ -31,18 +31,61 @@ from bs4 import BeautifulSoup
 from argparse import ArgumentParser,FileType
 from PIL import Image
 import urllib.request
-import io.BytesIO
+import re
+from io import BytesIO
+
+def get_image_from_url(image_url):
+    url_contents = urllib.request.urlopen(image_url)
+    image_file = BytesIO(url_contents.read())
+    im = Image.open(image_file)
+    return im
+
+def image_to_hex(image, format):
+    output = BytesIO()
+    image.save(output, format=format)
+    hex_string=output.getvalue()
+    return hex_string
 
 def question_parser_rtf(question):
+    # Get question paragraphs (question and options)
     q_options =  question.find_all('p')
-    parsed_q = q_options[0].get_text()+"\line\par\n"
+
+    # Get answers for the question from the rest paragraphs tags
     answers = 'Answers: '
     for x in q_options[1:]:
-        if x.get_text()[:11] == 'Explanation':
+        xtext = x.get_text()
+        parsed_q=''
+
+        # If it is an Explanation dont add it to the final string 
+        if xtext[:11] == 'Explanation':
             continue
-        parsed_q = parsed_q+x.get_text()+"\line\par\n"
-        if x.find('font', color='#333333'):
-            answers=answers+x.contents[0][:-1]+', '
+
+        if re.match('[A-H]\.', xtext[:2]):
+            # This is an option so add it to the final string with a newline
+            parsed_q = parsed_q+xtext+"\line\par\n"
+
+            # If the option has a font tag with color #333333 it is also an answer
+            # add the letter of the option to the anwsers string
+            if x.find('font', color='#333333'):
+               answers=answers+x.contents[0][:-1]+', '
+        else:
+            # This must be part of the question statement so add it to the string
+            parsed_q = parsed_q+xtext+"\line\par\n"
+
+            # Check if there is an image with this paragraph of the question
+            img_tag = x.find('img')
+            if img_tag:
+                # Get image from URL
+                image = get_image_from_url(img_tag['src'])
+                image_hex = image_to_hex(image,image.format)
+
+                print(str(image.format) + " " + str(image.width) + " " + str(image.height) +"\n")
+                print(img_tag['src'])
+
+                parsed_q = parsed_q + "{\pict\jpegblip\picw"+str(image.width)+"\pich"+str(image.height)+" "+str(image_hex)+"}\line\par\n"
+                #parsed_q = parsed_q + "{\pict\jpegblip\picw"+str(image.width)+"\pich"+str(image.height)+" "+str(image.tobytes())+"}\line\par\n"
+                
+
     parsed_q = parsed_q+answers[:-2]+'\line\par\n'
     return parsed_q
 
@@ -57,15 +100,6 @@ def question_parser_txt(question):
         if x.find('font', color='#333333'):
             answers=answers+x.contents[0][:-1]+', '
 
-def get_image_from_url(image_url):
-    url_contents = urllib.request.urlopen(image_url)
-    image_file = io.BytesIO(url_contents)
-    im = Image.open(image_file)
-    return im
-
-def image_to_hex(image):
-    hex_string='somehexstringsoon'
-    return hex_string
 
 parser = ArgumentParser(description="Generates rtf with questions from aiotestking.")
 parser.add_argument('exam_code', help='Code of the exam and version (i.e. "1z0-821", "1z0-821 (v.2)")')
@@ -78,7 +112,6 @@ exam_code=args.exam_code
 output_filepath=exam_code+'.rtf'
 
 if args.output_filepath and args.output_filepath[-4] == '.' and args.output_filepath[3:] != '.rtf':
-    print('dasdasd')
     output_filepath=args.output_filepath[:-4] + '.rtf'
 
 url_home="http://www.aiotestking.com"
