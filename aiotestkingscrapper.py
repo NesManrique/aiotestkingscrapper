@@ -33,8 +33,10 @@ from PIL import Image
 import urllib.request
 import re
 from io import BytesIO
-import functools
-import binascii
+from functools import partial
+from binascii import hexlify
+
+# Function that returns a Pillow's Image object from url
 
 def get_image_from_url(image_url):
     url_contents = urllib.request.urlopen(image_url)
@@ -42,16 +44,17 @@ def get_image_from_url(image_url):
     im = Image.open(image_file)
     return im
 
-def image_to_hex(image, format):
-    #output = BytesIO()
-    #image.save(output, format=format)
-    #byte_string=output.getvalue()
-    #print(binascii.hexlify(byte_string.encode('utf-8')))
-    #return binascii.hexlify(byte_string.encode('utf-8'))
+# Function that transforms Pillow's Image object to hex format
+# encoded in JPEG
 
-    img_bytes=image.tobytes()
-    #print(binascii.hexlify(img_bytes))
-    return binascii.hexlify(img_bytes)
+def image_to_hex(image, format):
+    output = BytesIO()
+    image.save(output, format=format)
+    byte_string=output.getvalue()
+
+    return hexlify(byte_string)
+
+# Function for parsing questions to .rtf format
 
 def question_parser_rtf(question,img_support):
     # Get question paragraphs (question and options)
@@ -63,12 +66,15 @@ def question_parser_rtf(question,img_support):
     for x in q_options:
         xtext = x.get_text()
 
+        if xtext[:11] == 'Your system':
+            print(question)
+            print(q_options)
+
         # If it is an Explanation dont add it to the final string also
         # don't check the rest of the paragraphs in this question
         if xtext[:11] == 'Explanation':
             break
-
-        if re.match('[A-H]\.', xtext[:2]):
+        elif re.match('[A-H]\.', xtext[:2]):
             # This is an option so add it to the final string with a newline
             parsed_q = parsed_q+xtext+"\line\par\n"
 
@@ -92,15 +98,24 @@ def question_parser_rtf(question,img_support):
                     #print(str(image.format) + " " + str(image.width) + " " + str(image.height) +"\n")
                     #print(img_tag['src'])
 
-                    parsed_q = parsed_q + "{\pict\jpegblip\picw" + str(image.width) + \
-                        "\pich" + str(image.height) + "\picwgoal" + str(image.width) + \
-                        "\pichgoal" + str(image.height) + \
-                        " " + str(image_hex) + "}\line\par\n"
+                    # Picture format in RTF
+                    # \pict control word
+                    # \pic[h|w] pic height and width in pixels
+                    # \pic[h|w]goal pic desired height and width in twips
+                    # aprox 1 pix = 15 twips in windows systems
+                    # refer to this http://stackoverflow.com/questions/604203/twips-pixels-and-points-oh-my/605911#605911
+                    # for short explanations about measurement systems and http://www.biblioscape.com/rtf15_spec.htm#Heading49
+                    # for explanation about RTF picture format
 
-                    #parsed_q = parsed_q + "{\pict\jpegblip\picw"+str(image.width)+"\pich"+str(image.height)+" "+str(image.tobytes())+"}\line\par\n"
+                    parsed_q = parsed_q + "{\shppict {\pict\jpegblip\picw" + str(image.width) + \
+                        "\pich" + str(image.height) + "\picwgoal" + str(image.width*15) + \
+                        "\pichgoal" + str(image.height*15) + \
+                        " " + str(image_hex)[2:-1] + "}}\line\par\n"
 
     parsed_q = parsed_q+answers[:-2]+'\line\par\n'
     return parsed_q
+
+# Fuction for parsing questions for txt output format
 
 def question_parser_txt(question):
     q_options =  question.find_all('p')
@@ -119,13 +134,13 @@ def question_parser_txt(question):
 parser = ArgumentParser(description="Generates rtf with questions from aiotestking.")
 parser.add_argument('exam_code', help='Code of the exam and version (i.e. "1z0-821", "1z0-821 (v.2)")')
 parser.add_argument('-f', '--output-filepath', help='especify output file name', metavar='output_filepath')
-parser.add_argument('-i', '--add-images', help='enable adding images to rtf file', action='store_true')
+parser.add_argument('-i', '--dont-add-images', action='store_false', help='disable adding images to rtf file')
 parser.add_argument('-txt', '--txt-output', action='store_true', help='outputs txt format instead of rtf (warning, txt format does not support images in questions)')
 
 args = parser.parse_args()
 
 exam_code=args.exam_code
-image_support=args.add_images
+image_support=args.dont_add_images
 txt_output=args.txt_output
 
 if txt_output:
@@ -171,10 +186,14 @@ for i in range(2, int(total_pages)+2):
     questions = soup.find_all('div', class_='archive_post_block')
     if txt_output:
         for number,question in zip(range(q_number+1,len(questions)+q_number+1),map(question_parser_txt,questions)):
+            if number==60:
+                print(question)
             file.write(str(number)+'. '+question+'\n')
     else:
-        for n,q in zip(range(q_number+1,len(questions)+q_number+1),map(functools.partial(question_parser_rtf,img_support=image_support),questions)):
-            file.write(str(n)+'. '+q+'\line\par\n')
+        for number,question in zip(range(q_number+1,len(questions)+q_number+1),map(partial(question_parser_rtf,img_support=image_support),questions)):
+            if number==60:
+                print(question)
+            file.write(str(number)+'. '+question+'\line\par\n')
 
     q_number = q_number+len(questions)
 

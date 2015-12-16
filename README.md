@@ -31,6 +31,8 @@ optional arguments:
   -h, --help            show this help message and exit
   -f output_filepath, --output-filepath output_filepath
                         especify output file name
+  -i, --dont-add-images
+                        disable adding images to rtf file
   -txt, --txt-output    outputs txt format instead of rtf (warning, txt format
                         does not support images in questions)
 ```
@@ -80,9 +82,8 @@ Answer: C, D
 - [x] Show error messages for exam codes not listed in aiotestking.
 - [x] Make output go to file instead of stdout. Also add parameter to specify file path and name.
 - [x] Add an option so it can output a .rtf file instead of a .txt so we can include images in questions as well.
-- [ ] Support scrapping and parsing images in questions.
+- [x] Support scrapping and parsing images in questions.
 - [ ] Change the script so it is not case sensitive in the exam search.
-- [ ] Make the script interactive and design a menu to list the exam codes and names of the tests for a specific vendor, e.g. Oracle, Cisco, etc (kind of like is organized in the home page of aiotestking).
 - [ ] Make the script python 2 compatible or turn it to binary with pyinstaller or cx_freeze.
 
 =======
