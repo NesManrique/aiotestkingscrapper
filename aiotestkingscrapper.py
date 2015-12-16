@@ -49,7 +49,7 @@ def image_to_hex(image, format):
     #print(binascii.hexlify(byte_string.encode('utf-8')))
     #return binascii.hexlify(byte_string.encode('utf-8'))
 
-    img_bytes=image.tobytes(encoder_name='ascii')
+    img_bytes=image.tobytes()
     #print(binascii.hexlify(img_bytes))
     return binascii.hexlify(img_bytes)
 

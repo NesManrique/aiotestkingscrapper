@@ -3,9 +3,9 @@ aiotestkingScrapper
 
 Scrapper for aiotestking page built in Python3 with [beautifulsoup](http://www.crummy.com/software/BeautifulSoup/).
 
-The idea is to get all the questions, options and answers from a specified test in aiotestking and get the exam formatted in a .txt or .rtf file and then import it to [Avanset VCE Exam Simulator](http://www.avanset.com/vce-simulator.html) desgining tool and finally run the test with the simulator.
+The idea is to get all the questions, options and answers from a specified test in aiotestking and get the exam formatted in a .txt or .rtf file.
 
-The purpose of this script is to ease the process of studying with a simulator and encourage you to search for the real anwsers since, as we have seen in our own experience, the anwsers and explanations in aiotestking are mostly wrong. ***Consider yourself advice! Do not self-rekt assuming everything in that page is right.***
+The purpose of this script is to practice web scrapping, python programming and generation of rtf files. aiotestking page has a pretty simple and standard format so it's perfect for practicing scrapping techniques.
 
 ## Installation
 
@@ -73,10 +73,6 @@ d) Fourth choice text.
 
 Answer: C, D
 ```
-
-The format for the exam simulator allows to add an explanation for the anwser but since answers in aiotestkings are mostly wrong, we strongly recommend you to review the questions by yourself, research the correct anwsers in the documentation of the product you are aiming a certification for, and benefit from te knowledge you will obtain with this plan of study.
-
-Some questions have images in them, soon I will add support so the output file will contain this images too.
 
 ### To do list
 - [x] Code an early version of the script.
