@@ -67,8 +67,6 @@ def question_parser_rtf(question,img_support):
         xtext = x.get_text()
 
         if xtext[:11] == 'Your system':
-            print(question)
-            print(q_options)
 
         # If it is an Explanation dont add it to the final string also
         # don't check the rest of the paragraphs in this question
@@ -94,9 +92,6 @@ def question_parser_rtf(question,img_support):
                     # Get image from URL
                     image = get_image_from_url(img_tag['src'])
                     image_hex = image_to_hex(image,image.format)
-
-                    #print(str(image.format) + " " + str(image.width) + " " + str(image.height) +"\n")
-                    #print(img_tag['src'])
 
                     # Picture format in RTF
                     # \pict control word
@@ -186,13 +181,9 @@ for i in range(2, int(total_pages)+2):
     questions = soup.find_all('div', class_='archive_post_block')
     if txt_output:
         for number,question in zip(range(q_number+1,len(questions)+q_number+1),map(question_parser_txt,questions)):
-            if number==60:
-                print(question)
             file.write(str(number)+'. '+question+'\n')
     else:
         for number,question in zip(range(q_number+1,len(questions)+q_number+1),map(partial(question_parser_rtf,img_support=image_support),questions)):
-            if number==60:
-                print(question)
             file.write(str(number)+'. '+question+'\line\par\n')
 
     q_number = q_number+len(questions)
