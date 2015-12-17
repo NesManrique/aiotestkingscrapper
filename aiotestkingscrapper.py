@@ -66,8 +66,6 @@ def question_parser_rtf(question,img_support):
     for x in q_options:
         xtext = x.get_text()
 
-        if xtext[:11] == 'Your system':
-
         # If it is an Explanation dont add it to the final string also
         # don't check the rest of the paragraphs in this question
         if xtext[:11] == 'Explanation':
